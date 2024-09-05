@@ -333,7 +333,7 @@ namespace Sharpmake.Generators.FastBuild
                     int hashcode = unity.GetHashCode() ^ projectRelativePathHash ^ string.Join("_", unityConfigurations).GetDeterministicHashCode();
 
                     unity.UnityName = $"{project.Name}_unity_{hashcode:X8}";
-                    unity.UnityOutputPattern = unity.UnityName.ToLower() + "*.cpp";
+                    unity.UnityOutputPattern = unity.UnityName + "*.cpp";
                 }
             }
         }
@@ -390,7 +390,7 @@ namespace Sharpmake.Generators.FastBuild
                         AppendFragmentUnityName(fragmentsInfos[i], unityFragments[i], ref fragmentString);
                     }
                     unity.UnityName = project.Name + fragmentString + "_unity";
-                    unity.UnityOutputPattern = unity.UnityName.ToLower() + "*.cpp";
+                    unity.UnityOutputPattern = unity.UnityName + "*.cpp";
                 }
             }
         }
@@ -431,7 +431,7 @@ namespace Sharpmake.Generators.FastBuild
 
                     int hashcode = fragmentString.ToLowerInvariant().GetDeterministicHashCode();
                     unity.UnityName = $"{project.Name}_unity_{hashcode:X8}";
-                    unity.UnityOutputPattern = unity.UnityName.ToLower() + "*.cpp";
+                    unity.UnityOutputPattern = unity.UnityName + "*.cpp";
                 }
             }
         }
@@ -449,7 +449,7 @@ namespace Sharpmake.Generators.FastBuild
                     if (!platformFragment.HasFlag(platformEnum))
                         continue;
 
-                    fragmentString += "_" + SanitizeForUnityName(Util.GetSimplePlatformString(platformEnum)).ToLower();
+                    fragmentString += "_" + SanitizeForUnityName(Util.GetSimplePlatformString(platformEnum));
                 }
             }
             else
