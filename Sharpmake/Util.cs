@@ -1582,16 +1582,31 @@ namespace Sharpmake
         {
             if (project is CSharpProject)
             {
-                switch (platform)
+                /*
+                 * @Nexus: Visual Studio doesn't really like when a .NET core does not have the platform "Any CPU".
+                 *         It works fine on Rider but Visual Studio says that there is a problem with the configurations and that some projects
+                 *         may not work correctly, and the .NET Core projects do not work. As soon as the .sln has the "Any CPU" instead of "x64"
+                 *         everything starts to work fine.
+                 *         I'm not really sure if it's a Visual Studio problem, a Sharpmaker problem or a Me problem but this works and I don't
+                 *         want to spend more time looking into this issue.
+                 */
+                if (target is Target ttarget && ttarget.Framework.IsDotNetCore() && ttarget.DevEnv.IsVisualStudio())
                 {
-                    case Platform.win32:
-                        return "x86";
-                    case Platform.win64:
-                        return "x64";
-                    case Platform.anycpu:
-                        return isForSolution ? "Any CPU" : "AnyCPU";
-                    default:
-                        throw new Exception(string.Format("This platform: {0} is not supported", platform));
+                    return isForSolution ? "Any CPU" : "AnyCPU";
+                }
+                else
+                {
+                    switch (platform)
+                    {
+                        case Platform.win32:
+                            return "x86";
+                        case Platform.win64:
+                            return "x64";
+                        case Platform.anycpu:
+                            return isForSolution ? "Any CPU" : "AnyCPU";
+                        default:
+                            throw new Exception(string.Format("This platform: {0} is not supported", platform));
+                    }                    
                 }
             }
             else if (project is PythonProject)
